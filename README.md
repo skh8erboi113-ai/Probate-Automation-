@@ -1,65 +1,120 @@
-# Real Estate Wholesaling & Probate Automation Platform
+# 🏠 Real Estate Wholesaling & Probate Automation Platform
 
-## Overview
-Full-stack automation platform for wholesaling real estate and probate homes.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-green.svg)](https://fastapi.tiangolo.com/)
+[![GitHub last commit](https://img.shields.io/github/last-commit/skh8erboi113-ai/Probate-Automation-)](https://github.com/skh8erboi113-ai/Probate-Automation-)
 
-**Automated Features:**
-- Lead generation (now supports **real public data**)
-- Lead scoring (likelihood to sell)
-- Automated multi-channel outreach (email, SMS, calls via mocks)
-- Response handling & conversation simulation
-- Human-only closing (no automation)
+> **Zero-cost, full-stack automation platform** that finds real probate & estate leads from public records, scores them, runs automated outreach, manages deals, generates contracts, and prepares everything for human closing.
 
-**Tech Stack:**
-- Backend: Python + FastAPI
-- Frontend: Vanilla HTML/JS Dashboard
-- Data: SQLite + CSV
-- ML: scikit-learn for scoring
+---
 
-## Full Backend Now Integrated ✅
+## ✨ Features
 
-The system now includes a complete backend:
-
-- **Deal CRM** — Every lead becomes a tracked deal with stages
+### 🔄 Full Automation Pipeline
+- **Real Lead Generation** — Pulls live data from Washington County + Oregon Courts
+- **Smart Lead Scoring** — ML + rules-based scoring (0–100 likelihood to sell)
+- **Multi-Channel Outreach** — Automated emails, SMS, and call scripts
+- **Deal CRM** — Tracks every lead through complete pipeline stages
 - **Automated Follow-ups** — 5-touch sequence (Day 3, 7, 14, 21, 30)
-- **Response Logging** — Log seller replies and auto-update deal stage
-- **Contract Generator** — Creates offer letters automatically
-- **Deal Packets** — Full handoff package for human closers
+- **Contract Generator** — Auto-creates professional offer letters
+- **Deal Packets** — Complete handoff packages for human closers
 
-## FREE Real Data Sources (No Money Needed)
+### 🚫 Human-Only Closing
+Closing is intentionally **not automated** — leads are handed off ready for your sales team.
 
-### 1. Washington County Property Records (Your Location)
-- https://www.co.washington.or.us/AssessmentTaxation/
-- Search for owners containing: ESTATE, DECEASED, TRUST
-- Export CSV or use public terminals
+---
 
-### 2. Oregon Probate Court Records
-- https://webportal.courts.oregon.gov/portal/
-- Free public search for probate cases
-- Use county filter: Washington County
+## 🛠 Tech Stack
 
-### 3. GIS Map (for verification)
-- http://gisims.co.washington.or.us/InterMap/
+| Layer       | Technology                  |
+|-------------|-----------------------------|
+| Backend     | FastAPI + Python            |
+| Frontend    | Vanilla HTML/JS Dashboard   |
+| Database    | SQLite                      |
+| ML/Scoring  | scikit-learn                |
+| Data Source | Public Government Records   |
 
-## Setup & Run
+---
 
-1. Install dependencies:
+## 📊 Project Stats
+
+- **100% Free** — No paid APIs or lead services
+- **Real Data Only** — Pulls directly from county & court records
+- **Production Ready** — Includes CI, templates, and professional docs
+
+---
+
+## 🚀 Quick Start
+
+### 1. Clone the repo
 ```bash
-pip install fastapi uvicorn pandas scikit-learn sqlalchemy python-multipart
+git clone https://github.com/skh8erboi113-ai/Probate-Automation-.git
+cd Probate-Automation-
 ```
 
-2. Import real leads:
+### 2. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Import real leads (free public data)
 ```bash
 cd backend
 python real_data_ingest.py
 ```
 
-3. Start the backend:
+### 4. Run the backend
 ```bash
 uvicorn main:app --reload --port 8000
 ```
 
-4. Open dashboard:
-Open `frontend/index.html` in browser.
+### 5. Open the dashboard
+Just open `frontend/index.html` in your browser.
 
-**Everything runs on public records — 100% free.**
+---
+
+## 📍 Free Real Data Sources
+
+| Source                              | Link                                                                 |
+|-------------------------------------|----------------------------------------------------------------------|
+| Washington County Property Records  | https://www.co.washington.or.us/AssessmentTaxation/                  |
+| Oregon Probate Court Portal         | https://webportal.courts.oregon.gov/portal/                          |
+| GIS Verification Map                | http://gisims.co.washington.or.us/InterMap/                          |
+
+---
+
+## 📁 Repository Structure
+
+```
+Probate-Automation-/
+├── backend/                  # Core automation engine
+│   ├── main.py               # FastAPI server + endpoints
+│   ├── deal_manager.py       # Deal CRM, contracts, packets
+│   ├── scorer.py             # Lead scoring
+│   ├── outreach.py           # Multi-channel automation
+│   ├── auto_filter_county_csv.py
+│   └── real_data_ingest.py
+├── frontend/
+│   └── index.html            # Interactive dashboard
+├── .github/                  # GitHub templates + CI
+├── WEEKLY_CHECKLIST.md       # 15-minute Monday routine
+├── requirements.txt
+└── LICENSE
+```
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+
+---
+
+**Built with ❤️ for real estate wholesalers who want to scale without spending money on leads.**
