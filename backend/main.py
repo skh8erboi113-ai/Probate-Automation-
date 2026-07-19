@@ -59,12 +59,6 @@ class Lead(BaseModel):
 def root():
     return {"message": "Real Estate Automation API running"}
 
-@app.post("/generate-leads")
-def generate_leads(batch_size: int = 10):
-    import subprocess
-    result = subprocess.run(["python", "lead_generator.py", str(batch_size)], capture_output=True, text=True, cwd=".")
-    return {"status": "success", "generated": batch_size, "output": result.stdout}
-
 @app.get("/leads")
 def get_leads():
     conn = sqlite3.connect(DB_PATH)
