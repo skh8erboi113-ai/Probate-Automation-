@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real Estate Wholesale Automation</title>
+    <style>
+        body { font-family: system-ui; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: auto; }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+        th { background: #0d6efd; color: white; }
+        button { padding: 6px 12px; margin: 2px; cursor: pointer; }
+        .score-high { background: #d1fae5; }
+        .score-med { background: #fef3c7; }
+        .status { padding: 3px 8px; border-radius: 4px; font-size: 0.85em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏠 Real Estate Wholesale Automation</h1>
+        <p><strong>Automated:</strong> Leads • Scoring • Outreach | <strong>Human-only:</strong> Closing</p>
+        
+        <div style="margin: 20px 0;">
+            <button onclick="generateLeads()">Generate New Leads</button>
+            <button onclick="loadLeads()">Refresh Leads</button>
+            <button onclick="loadDeals()">View Deals</button>
+        </div>
+        
+        <h3>Leads</h3>
+        <table id="leadsTable">
+            <thead>
+                <tr>
+                    <th>ID</th><th>Address</th><th>Owner</th><th>Value</th>
+                    <th>Age</th><th>DOM</th><th>Probate</th><th>Score</th><th>Status</th><th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <h3 style="margin-top:40px">Active Deals</h3>
+        <table id="dealsTable">
+            <thead>
+                <tr>
+                    <th>Deal ID</th><th>Address</th><th>Score</th><th>Stage</th>
+                    <th>Contract</th><th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    
+    <script>
+        const API = 'http://localhost:8000';
+        
+        async function loadLeads() {
+            const res = await fetch(API + '/leads');
+            const leads = await res.json();
+            const tbody = document.querySelector('#leadsTable tbody');
+            tbody.innerHTML = '';
+            
+            leads.forEach(lead => {
+                const tr = document.createElement('tr');
+                const scoreClass = lead.score > 75 ? 'score-high' : lead.score > 50 ? 'score-med' : '';
+                
+                tr.innerHTML = `
+                    <td>${lead.id}</td>
+                    <td>${lead.address}</td>
+                    <td>${lead.owner_name}</td>
+                    <td>$${lead.estimated_value.toLocaleString()}</td>
+                    <td>${lead.owner_age}</td>
+                    <td>${lead.days_on_market}</td>
+                    <td>${lead.probate_status}</td>
+                    <td class="${scoreClass}">${lead.score || '-'}</td>
+                    <td><span class="status">${lead.status}</span></td>
+                    <td>
+                        ${!lead.score ? `<button onclick="scoreLead(${lead.id})">Score</button>` : ''}
+                        ${lead.score && lead.status !== 'outreach_started' ? `<button onclick="startOutreach(${lead.id})">Start Outreach</button>` : ''}
+                        ${lead.status === 'outreach_started' ? `<button onclick="markReady(${lead.id})">Ready for Closing</button>` : ''}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+        
+        async function generateLeads() {
+            await fetch(API + '/generate-leads?batch_size=8', { method: 'POST' });
+            setTimeout(loadLeads, 800);
+        }
+        
+        async function scoreLead(id) {
+            await fetch(API + `/score/${id}`, { method: 'POST' });
+            loadLeads();
+        }
+        
+        async function startOutreach(id) {
+            const res = await fetch(API + `/start-outreach/${id}`, { method: 'POST' });
+            const data = await res.json();
+            alert('Outreach started:\n' + JSON.stringify(data.channels.map(c => c.channel + ': sent'), null, 2));
+            loadLeads();
+        }
+        
+        async function markReady(id) {
+            await fetch(API + `/mark-ready/${id}`, { method: 'POST' });
+            alert('Lead marked ready for human closing!');
+            loadLeads();
+        }
+
+        // ==================== NEW BACKEND FUNCTIONS ====================
+        
+        async function createDeal(leadId) {
+            const res = await fetch(API + `/create-deal/${leadId}`, { method: 'POST' });
+            const data = await res.json();
+            alert(`Deal #${data.deal_id} created with automated follow-ups!`);
+            loadDeals();
+        }
+        
+        async function generateContract(dealId) {
+            const res = await fetch(API + `/generate-contract/${dealId}`, { method: 'POST' });
+            const data = await res.json();
+            alert(`Contract generated: ${data.contract_file}`);
+        }
+        
+        async function readyForClosing(dealId) {
+            const res = await fetch(API + `/ready-for-closing/${dealId}`, { method: 'POST' });
+            const data = await res.json();
+            alert(`Deal packet created: ${data.deal_packet}\nReady for human closer!`);
+            loadDeals();
+        }
+        
+        async function loadDeals() {
+            const res = await fetch(API + '/deals');
+            const deals = await res.json();
+            const tbody = document.querySelector('#dealsTable tbody');
+            tbody.innerHTML = '';
+            
+            deals.forEach(deal => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${deal.id}</td>
+                    <td>${deal.address}</td>
+                    <td>${deal.score || '-'}</td>
+                    <td><span class="status">${deal.stage}</span></td>
+                    <td>${deal.contract_generated ? '✅' : '—'}</td>
+                    <td>
+                        ${deal.stage === 'new' ? `<button onclick="generateContract(${deal.id})">Generate Contract</button>` : ''}
+                        ${deal.stage !== 'ready_for_closing' ? `<button onclick="readyForClosing(${deal.id})">Ready for Closing</button>` : ''}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+        
+        // Boot
+        window.onload = () => {
+            loadLeads();
+            loadDeals();
+        };
+    </script>
+</body>
+</html>
