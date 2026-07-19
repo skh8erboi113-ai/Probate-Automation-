@@ -84,6 +84,18 @@ Just open `frontend/index.html` in your browser.
 
 ---
 
+## 🎥 Demo Video
+
+A complete demo video has been prepared with:
+
+- Professional video script (`docs/DEMO_VIDEO_SCRIPT.md`)
+- 4 high-quality dashboard screenshots (`demo/` folder)
+- Ready-to-use video title & description
+
+**Watch the demo** → Record using the script in `docs/DEMO_VIDEO_SCRIPT.md`
+
+---
+
 ## 📁 Repository Structure
 
 ```
