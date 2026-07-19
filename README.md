@@ -97,6 +97,10 @@ Probate-Automation-/
 │   └── real_data_ingest.py
 ├── frontend/
 │   └── index.html            # Interactive dashboard
+├── docs/                     # Detailed documentation
+│   ├── DETAILED_GUIDE.md     # Complete user manual
+│   ├── DEMO.md               # Step-by-step demo guide
+│   └── QUICK_REFERENCE.md    # Daily command reference
 ├── .github/                  # GitHub templates + CI
 ├── WEEKLY_CHECKLIST.md       # 15-minute Monday routine
 ├── requirements.txt
